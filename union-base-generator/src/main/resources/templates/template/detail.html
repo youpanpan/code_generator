@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+    <link rel="stylesheet" th:href="${'/static/css/template/add.css'}">
+
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">模版</a>
+            </li>
+            <li><a href="#">模版</a></li>
+            <li class="active">查看</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 返回栏 -->
+                <div class="j-back-bar">
+                    <div class="j-back-btn-group">
+                        <button class="btn btn-white btn-success btn-round j-step-backward">
+                            <i class="ace-icon fa fa-backward "></i>
+                            返回
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 表单 -->
+                <form class="layui-form" action="">
+                    <input type="hidden" name="id" th:value="${template.id}" id="templateId"/>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模版名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="templateName"
+                                   th:value="${template.templateName}"
+                                   required  lay-verify="required"
+                                   placeholder="请输入模版名称" autocomplete="off" class="layui-input" readonly>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模版类型</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="templateType" value="1" th:checked="${template.templateType=='1'}" lay-filter="template-type-filter" title="单模版" disabled>
+                            <input type="radio" name="templateType" value="2" th:checked="${template.templateType=='2'}" lay-filter="template-type-filter" title="组合模版" disabled>
+                        </div>
+                    </div>
+                    <div th:class="${template.templateType=='1'?'layui-form-item':'layui-form-item hide'}" id="template_file_container">
+                        <label class="layui-form-label">模版文件</label>
+                        <div class="layui-input-block">
+                            <a class="table-link file-link" th:href="${'/template/manager/download/' + template.id}" th:text="${template.templateFileName}"></a>
+                            <button class="hide" id="upload_btn"></button>
+                            <input type="hidden" name="templatePath" id="templatePath" th:value="${template.templatePath}"/>
+                            <input type="hidden" name="templateFileName" id="templateFileName" th:value="${template.templateFileName}"/>
+                            <input type="hidden" name="templateFileSize" id="templateFileSize" th:value="${template.templateFileSize}"/>
+                        </div>
+                    </div>
+                    <div th:class="${template.templateType=='2'?'layui-form-item':'layui-form-item hide'}" id="child_template_container">
+                        <label class="layui-form-label">子模版</label>
+                        <div class="layui-input-block">
+                            <div class="child-template-wapper">
+                                <ul class="child-template-list" id="child_template_list">
+                                    <!--<li title="删除" data-id="">
+                                        <span>mvn模版</span>
+                                        <i class="fa fa-close del-icon"></i>
+                                    </li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:class="${template.templateType=='1'?'layui-form-item':'layui-form-item hide'}">
+                        <label class="layui-form-label">模版引擎</label>
+                        <div class="layui-input-block">
+                            <select name="engineId" required lay-verify="required" disabled>
+                                <option value=""></option>
+                                <div th:each="engine : ${engineList}">
+                                    <option th:value="${engine.id}" th:text="${engine.engineName}" th:selected="${engine.id == template.engineId}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">依赖上下文</label>
+                        <div class="layui-input-block">
+                            <div class="child-template-wapper">
+                                <ul class="child-template-list" id="context_list">
+                                    <!--<li title="删除" data-id="">
+                                        <span>mvn模版</span>
+                                        <i class="fa fa-close del-icon"></i>
+                                    </li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模版描述</label>
+                        <div class="layui-input-block">
+                            <textarea name="templateDesc" th:text="${template.templateDesc}" placeholder="请输入模版描述"
+                                      autocomplete="off" class="layui-textarea" readonly></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="orderNum" th:value="${template.orderNum}" required  lay-verify="required|number"
+                                   placeholder="请输入排序号" autocomplete="off" class="layui-input"
+                                   readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">开放类型</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="openTypeSwitch" th:checked="${template.openType=='1'}" lay-skin="switch" lay-text="项目组|私有" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="switch" th:checked="${template.status=='1'}" lay-skin="switch" lay-text="启用|禁用" disabled>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/template/detail.js'}"></script>

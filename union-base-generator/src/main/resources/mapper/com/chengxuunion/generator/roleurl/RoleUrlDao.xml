@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.roleurl.dao.RoleUrlDao">
+
+    <!-- 结果集 -->
+    <resultMap id="RoleUrlResultMap" type="com.chengxuunion.generator.business.roleurl.model.RoleUrl">
+    
+        <id column="id" property="id" />
+        
+        
+        <result column="role_id" property="roleId" />
+        
+        <result column="url_id" property="urlId" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="create_user_id" property="createUserId" />
+    
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.role_id,
+        t.url_id,
+        t.create_date,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询角色URL列表 -->
+    <select id="listRoleUrl" resultMap="RoleUrlResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            role_url t
+    </select>
+
+    <!-- 查询角色能访问的URL列表 -->
+    <select id="listRoleUrlByRoleId" resultMap="RoleUrlResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            role_url t
+        WHERE t.role_id = #{roleId}
+    </select>
+
+    <!-- 根据主键查询单个角色URL对象 -->
+    <select id="getRoleUrl" resultMap="RoleUrlResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            role_url t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存角色URL对象 -->
+    <insert id="saveRoleUrl" parameterType="com.chengxuunion.generator.business.roleurl.model.RoleUrl">
+        INSERT INTO
+            role_url
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="urlId != null">url_id,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="urlId != null">#{urlId},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+
+    <insert id="saveRoleUrlBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            INSERT INTO
+                role_url
+
+            <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">id,</if>
+                <if test="item.roleId != null">role_id,</if>
+                <if test="item.urlId != null">url_id,</if>
+                <if test="item.createDate != null">create_date,</if>
+                <if test="item.createUserId != null">create_user_id,</if>
+
+            </trim>
+            <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">#{item.id},</if>
+                <if test="item.roleId != null">#{item.roleId},</if>
+                <if test="item.urlId != null">#{item.urlId},</if>
+                <if test="item.createDate != null">#{item.createDate},</if>
+                <if test="item.createUserId != null">#{item.createUserId},</if>
+
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- 更新角色URL对象 -->
+    <update id="updateRoleUrl" parameterType="com.chengxuunion.generator.business.roleurl.model.RoleUrl">
+        UPDATE
+            role_url
+        <set>
+        
+            <if test="roleId != null">role_id = #{roleId},</if>
+
+            <if test="urlId != null">url_id = #{urlId},</if>
+
+            <if test="createDate != null">create_date = #{createDate},</if>
+
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除角色URL -->
+    <delete id="deleteRoleUrl">
+        DELETE FROM
+            role_url
+        WHERE
+            id = #{id}
+    </delete>
+
+    <!-- 删除角色下的所有URL -->
+    <delete id="deleteRoleUrlByRoleId">
+        DELETE FROM
+            role_url
+        WHERE
+            role_id = #{roleId}
+    </delete>
+
+</mapper>

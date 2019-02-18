@@ -1,0 +1,13 @@
+<div th:fragment="listDetail(contextId, instanceId)">
+    <form class="layui-form" action="#" >
+        <input type="hidden" name="contextId" id="contextId" th:value="${contextId}"/>
+        <input type="hidden" name="instanceId" id="instanceId" th:value="${instanceId}"/>
+
+        <div id="param_list_container">
+
+        </div>
+
+    </form>
+    <script th:src="${'/static/js/contextparamvalue/list-detail.js'}"></script>
+</div>
+

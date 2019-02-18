@@ -1,0 +1,28 @@
+.user-list-wapper{
+    padding-top: 12px;
+}
+
+.user-list .user-name{
+    line-height: 36px;
+}
+
+.user-list li{
+    float: left;
+    padding: 8px 12px 0 12px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #eee;
+}
+
+.user-list li:hover{
+    border-color: red;
+}
+
+.user-list .del-layui-item:hover{
+    cursor: pointer;
+}
+
+.user-list .del-layui-item:hover .del-icon{
+    color: red;
+    cursor: pointer;
+}

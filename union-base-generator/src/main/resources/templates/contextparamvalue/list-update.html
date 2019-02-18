@@ -1,0 +1,20 @@
+<div th:fragment="listUpdate(contextId, instanceId)">
+    <form class="layui-form" action="#" >
+        <input type="hidden" name="contextId" id="contextId" th:value="${contextId}"/>
+        <input type="hidden" name="instanceId" id="instanceId" th:value="${instanceId}"/>
+
+        <div id="param_list_container">
+
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="param_value_filter">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+    </form>
+    <script th:src="${'/static/js/contextparamvalue/list-update.js'}"></script>
+</div>
+

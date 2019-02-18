@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.role.dao.RoleDao">
+
+    <!-- 结果集 -->
+    <resultMap id="RoleResultMap" type="com.chengxuunion.generator.business.role.model.Role">
+    
+        <id column="id" property="id" />
+
+        <result column="role_code" property="roleCode" />
+        
+        <result column="role_name" property="roleName" />
+        
+        <result column="role_desc" property="roleDesc" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="update_date" property="updateDate" />
+        
+        <result column="create_user_id" property="createUserId" />
+    
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.role_code,
+        t.role_name,
+        t.role_desc,
+        t.create_date,
+        t.update_date,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询角色列表 -->
+    <select id="listRole" resultMap="RoleResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            role t
+        WHERE 1=1
+        <if test="roleName != null and roleName != ''">
+            AND t.role_name LIKE  '%' #{roleName} '%'
+        </if>
+        ORDER BY t.update_date DESC
+    </select>
+
+    <!-- 根据主键查询单个角色对象 -->
+    <select id="getRole" resultMap="RoleResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            role t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存角色对象 -->
+    <insert id="saveRole" parameterType="com.chengxuunion.generator.business.role.model.Role">
+        INSERT INTO
+            role
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="roleCode != null and roleCode != ''">role_code,</if>
+            <if test="roleName != null and roleName != ''">role_name,</if>
+            <if test="roleDesc != null and roleDesc != ''">role_desc,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="roleCode != null and roleCode != ''">#{roleCode},</if>
+            <if test="roleName != null and roleName != ''">#{roleName},</if>
+            <if test="roleDesc != null and roleDesc != ''">#{roleDesc},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+
+    <!-- 更新角色对象 -->
+    <update id="updateRole" parameterType="com.chengxuunion.generator.business.role.model.Role">
+        UPDATE
+            role
+        <set>
+        
+            
+            
+            <if test="roleCode != null and roleCode != ''">role_code = #{roleCode},</if>
+            
+            
+            <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+            
+            
+            <if test="roleDesc != null and roleDesc != ''">role_desc = #{roleDesc},</if>
+            
+            
+            <if test="createDate != null">create_date = #{createDate},</if>
+            
+            
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            
+            
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            
+        
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除角色 -->
+    <delete id="deleteRole">
+        DELETE FROM
+            role
+        WHERE
+            id = #{id}
+    </delete>
+
+</mapper>

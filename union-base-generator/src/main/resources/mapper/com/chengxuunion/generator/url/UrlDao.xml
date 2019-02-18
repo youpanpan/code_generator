@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.url.dao.UrlDao">
+
+    <!-- 结果集 -->
+    <resultMap id="UrlResultMap" type="com.chengxuunion.generator.business.url.model.Url">
+    
+        <id column="id" property="id" />
+
+        <result column="url_name" property="urlName" />
+
+        <result column="url_name_english" property="urlNameEnglish"/>
+        
+        <result column="url" property="url" />
+        
+        <result column="method" property="method" />
+        
+        <result column="menu" property="menu" />
+
+        <result column="icon" property="icon" />
+        
+        <result column="parent_id" property="parentId" />
+        
+        <result column="status" property="status" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="update_date" property="updateDate" />
+        
+        <result column="order_num" property="orderNum" />
+        
+        <result column="create_user_id" property="createUserId" />
+
+        <collection property="childUrlList" javaType="java.util.List"
+                    ofType="com.chengxuunion.generator.business.url.model.Url"
+                    column="{parentId=id}"
+                    select="listUrlByParentId">
+        </collection>
+    </resultMap>
+
+    <!-- 结果集 -->
+    <resultMap id="UrlMenuResultMap" type="com.chengxuunion.generator.business.url.model.Url">
+
+        <id column="id" property="id" />
+
+        <result column="url_name" property="urlName" />
+
+        <result column="url_name_english" property="urlNameEnglish"/>
+
+        <result column="url" property="url" />
+
+        <result column="method" property="method" />
+
+        <result column="menu" property="menu" />
+
+        <result column="icon" property="icon" />
+
+        <result column="parent_id" property="parentId" />
+
+        <result column="status" property="status" />
+
+        <result column="create_date" property="createDate" />
+
+        <result column="update_date" property="updateDate" />
+
+        <result column="order_num" property="orderNum" />
+
+        <result column="create_user_id" property="createUserId" />
+
+        <result column="user_id" property="userId"/>
+
+        <collection property="childUrlList" javaType="java.util.List"
+                    ofType="com.chengxuunion.generator.business.url.model.Url"
+                    column="{parentId=id,userId=user_id}"
+                    select="listMenuUrlByParentId">
+        </collection>
+    </resultMap>
+    
+    <resultMap id="OneUrlResultMap" type="com.chengxuunion.generator.business.url.model.Url">
+        <id column="id" property="id" />
+
+        <result column="url_name" property="urlName" />
+
+        <result column="url_name_english" property="urlNameEnglish"/>
+
+        <result column="url" property="url" />
+
+        <result column="method" property="method" />
+
+        <result column="menu" property="menu" />
+
+        <result column="icon" property="icon" />
+
+        <result column="parent_id" property="parentId" />
+
+        <result column="status" property="status" />
+
+        <result column="create_date" property="createDate" />
+
+        <result column="update_date" property="updateDate" />
+
+        <result column="order_num" property="orderNum" />
+
+        <result column="create_user_id" property="createUserId" />
+
+        <association property="parentUrl" javaType="com.chengxuunion.generator.business.url.model.Url">
+            <id column="parent_id" property="id"/>
+            <result column="parent_url_name" property="urlName" />
+        </association>
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.url_name,
+        t.url_name_english,
+        t.url,
+        t.method,
+        t.menu,
+        t.icon,
+        t.parent_id,
+        t.status,
+        t.create_date,
+        t.update_date,
+        t.order_num,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询系统URL列表 -->
+    <select id="listUrl" resultMap="UrlResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            url t
+    </select>
+
+    <!-- 查询用户能访问的URL列表 -->
+    <select id="listUrlByUserId" resultMap="OneUrlResultMap">
+        SELECT DISTINCT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            url t
+        INNER JOIN role_url ru ON ru.url_id = t.id
+        INNER JOIN user_role ur ON ur.role_id = ru.role_id
+        WHERE ur.user_id = #{userId}
+    </select>
+
+    <!-- 查询所有URL -->
+    <select id="listAllUrl" resultMap="UrlResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            url t
+        WHERE  t.parent_id IS NULL
+        ORDER BY t.order_num ASC
+    </select>
+
+    <!-- 根据父级URL ID查询系统URL列表（父级为NULL，则表示查询所有的URL） -->
+    <select id="listUrlByParentId" resultMap="UrlResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            url t
+        WHERE t.parent_id = #{parentId}
+        ORDER BY t.order_num ASC
+    </select>
+
+    <!-- 查询用户能访问的菜单URL -->
+    <select id="listMenuUrlByUserId" resultMap="UrlMenuResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,ru.user_id AS user_id
+        FROM
+            url t
+        INNER JOIN (
+            SELECT
+                ru.url_id, ur.user_id
+            FROM
+                role_url ru
+            INNER JOIN user_role ur ON ur.role_id = ru.role_id
+            WHERE ur.user_id = #{userId}
+            GROUP BY ru.url_id, ur.user_id
+        ) ru ON ru.url_id = t.id
+        WHERE t.parent_id IS NULL
+            AND t.menu = '1' AND t.STATUS = '1'
+        ORDER BY t.order_num ASC
+    </select>
+
+    <!-- 根据父级URL ID查询系统URL列表（父级为NULL，则表示查询所有的URL） -->
+    <select id="listMenuUrlByParentId" resultMap="UrlMenuResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,ru.user_id AS user_id
+        FROM
+            url t
+        INNER JOIN (
+            SELECT
+                ru.url_id, ur.user_id
+            FROM
+                role_url ru
+            INNER JOIN user_role ur ON ur.role_id = ru.role_id
+            WHERE ur.user_id = #{userId}
+            GROUP BY ru.url_id, ur.user_id
+        ) ru ON ru.url_id = t.id
+        WHERE t.menu = '1' AND t.STATUS = '1'
+            AND t.parent_id = #{parentId}
+        ORDER BY t.order_num ASC
+    </select>
+
+    <!-- 根据主键查询单个系统URL对象 -->
+    <select id="getUrl" resultMap="OneUrlResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,p.url_name AS "parent_url_name"
+        FROM
+            url t
+        LEFT JOIN url p ON p.id = t.parent_id
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存系统URL对象 -->
+    <insert id="saveUrl" parameterType="com.chengxuunion.generator.business.url.model.Url">
+        INSERT INTO
+            url
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="urlName != null and urlName != ''">url_name,</if>
+            <if test="urlNameEnglish != null and urlNameEnglish != ''">url_name_english,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="method != null and method != ''">method,</if>
+            <if test="menu != null and menu != ''">menu,</if>
+            <if test="icon != null and icon != ''">icon,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="urlName != null and urlName != ''">#{urlName},</if>
+            <if test="urlNameEnglish != null and urlNameEnglish != ''">#{urlNameEnglish},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="method != null and method != ''">#{method},</if>
+            <if test="menu != null and menu != ''">#{menu},</if>
+            <if test="icon != null and icon != ''">#{icon},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+
+    <!-- 更新系统URL对象 -->
+    <update id="updateUrl" parameterType="com.chengxuunion.generator.business.url.model.Url">
+        UPDATE
+            url
+        <set>
+
+            <if test="urlName != null and urlName != ''">url_name = #{urlName},</if>
+
+            <if test="urlNameEnglish != null and urlNameEnglish != ''">url_name_english = #{urlNameEnglish},</if>
+            
+            <if test="url != null and url != ''">url = #{url},</if>
+            
+            <if test="method != null and method != ''">method = #{method},</if>
+            
+            <if test="menu != null and menu != ''">menu = #{menu},</if>
+
+            <if test="icon != null and icon != ''">icon = #{icon},</if>
+            
+            <if test="parentId != null">parent_id = #{parentId},</if>
+
+            <if test="status != null and status != ''">status = #{status},</if>
+            
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除系统URL -->
+    <delete id="deleteUrl">
+        DELETE FROM
+            url
+        WHERE
+            id = #{id}
+    </delete>
+
+    <!-- 批量删除系统URL -->
+    <delete id="deleteUrlBatch" parameterType="java.util.List">
+        <foreach collection="list" item="id" separator=";">
+            DELETE FROM
+            url
+            WHERE
+            id = #{id}
+        </foreach>
+    </delete>
+
+</mapper>

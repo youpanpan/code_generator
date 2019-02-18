@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout-open">
+<div th:fragment="content">
+    <div class="page-content">
+    <div th:include="contextparamvalue/list-detail::listDetail(instanceId=${instanceId},contextId=${contextId})"></div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+${modelName}
+${modelNameSmall}
+<#list columns as column>
+  字段名：${column.javaFieldName}
+  字段类型：${column.javaType}
+</#list>

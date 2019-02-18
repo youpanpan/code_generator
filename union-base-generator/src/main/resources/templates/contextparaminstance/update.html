@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">上下文参数实例</a>
+            </li>
+            <li><a href="#">上下文参数实例</a></li>
+            <li class="active">编辑</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 返回栏 -->
+                <div class="j-back-bar">
+                    <div class="j-back-btn-group">
+                        <button class="btn btn-white btn-success btn-round j-step-backward">
+                            <i class="ace-icon fa fa-backward "></i>
+                            返回
+                        </button>
+                    </div>
+                </div>
+
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">基本信息</li>
+                        <li>参数值配置</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <!-- 表单 -->
+                            <form class="layui-form" action="">
+                                <input type="hidden" name="id" th:value="${contextParamInstance.id}"/>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">上下文</label>
+                                    <div class="layui-input-block">
+                                        <select name="contextId" lay-verify="required" disabled>
+                                            <option value=""></option>
+                                            <div th:each="context : ${contextList}">
+                                                <option th:value="${context.id}" th:text="${context.contextName}" th:selected="${contextParamInstance.contextId==context.id}"></option>
+                                            </div>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">实例名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="instanceName"
+                                               th:value="${contextParamInstance.instanceName}"
+                                               required  lay-verify="required"
+                                               placeholder="请输入实例名称" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">实例描述</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="instanceDesc"
+                                                  th:text="${contextParamInstance.instanceDesc}"
+                                                  placeholder="请输入实例描述" autocomplete="off" class="layui-textarea"></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">排序号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="orderNum"
+                                               th:value="${contextParamInstance.orderNum}"
+                                               required  lay-verify="required|number"
+                                               placeholder="请输入排序号" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">开放类型</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="openTypeSwitch" th:checked="${contextParamInstance.openType=='1'}" lay-skin="switch" lay-text="项目组|私有">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">状态</label>
+                                    <div class="layui-input-block">
+                                        <input type="checkbox" name="switch" th:checked="${contextParamInstance.status=='1'}" lay-skin="switch" lay-text="启用|禁用">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-submit lay-filter="update-contextparaminstance-filter">保存</button>
+                                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div th:include="contextparamvalue/list-update::listUpdate(instanceId=${contextParamInstance.id},contextId=${contextParamInstance.contextId})"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/contextparaminstance/update.js'}"></script>

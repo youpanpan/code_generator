@@ -1,0 +1,90 @@
+package [# th:utext="${basePackage}" /].service.impl;
+
+import com.chengxuunion.util.id.IdGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.chengxuunion.generator.common.model.PageResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import java.util.List;
+import java.util.Date;
+
+import [# th:utext="${basePackage}" /].model.[# th:utext="${modelName}" /];
+import [# th:utext="${basePackage}" /].service.[# th:utext="${modelName}" /]Service;
+import [# th:utext="${basePackage}" /].dao.[# th:utext="${modelName}" /]Dao;
+import [# th:utext="${basePackage}" /].model.request.[# th:utext="${modelName}" /]PageParam;
+
+
+/**
+ * @Author [# th:utext="${author}" /]
+ * @Description:    [# th:utext="${modelDesc}" /]服务实现
+ * @Date:创建时间: [# th:utext="${curDate}" /]
+ * @Modified By:
+ */
+@Service
+public class [# th:utext="${modelName}" /]ServiceImpl implements [# th:utext="${modelName}" /]Service {
+
+    @Autowired
+    private [# th:utext="${modelName}" /]Dao [# th:utext="${modelVarName}" /]Dao;
+
+    @Override
+    public PageResult<[# th:utext="${modelName}" /]> list[# th:utext="${modelName}" /]Page([# th:utext="${modelName}" /]PageParam [# th:utext="${modelVarName}" /]PageParam) {
+        PageHelper.startPage([# th:utext="${modelVarName}" /]PageParam.getPageNum() , [# th:utext="${modelVarName}" /]PageParam.getPageSize());
+        List<[# th:utext="${modelName}" /]> [# th:utext="${modelVarName}" /]List = [# th:utext="${modelVarName}" /]Dao.list[# th:utext="${modelName}" /]([# th:utext="${modelVarName}" /]PageParam);
+        //得到分页的结果对象
+        PageInfo<[# th:utext="${modelName}" /]> pageInfo = new PageInfo<>([# th:utext="${modelVarName}" /]List);
+
+        return new PageResult<[# th:utext="${modelName}" /]>([# th:utext="${modelVarName}" /]PageParam, pageInfo.getTotal(), [# th:utext="${modelVarName}" /]List);
+    }
+
+    /**
+     * 根据主键查询单个[# th:utext="${modelDesc}" /]对象
+     *
+     * @param [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/] 主键
+     * @return  单个[# th:utext="${modelDesc}" /]对象
+     */
+    @Override
+    public [# th:utext="${modelName}" /] get[# th:utext="${modelName}" /]([# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaType}" /] [# th:utext="${column.javaFieldName}" /][/][/]) {
+        return [# th:utext="${modelVarName}" /]Dao.get[# th:utext="${modelName}" /]([# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/]);
+    }
+
+    /**
+     * 保存[# th:utext="${modelDesc}" /]对象
+     *
+     * @param [# th:utext="${modelVarName}" /] [# th:utext="${modelDesc}" /]对象
+     * @return  保存影响的记录数
+     */
+    @Override
+    public int save[# th:utext="${modelName}" /]([# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /]) {
+        [# th:utext="${modelVarName}" /].setId(IdGenerator.getInstance().nextId());
+        Date nowDate = new Date();
+        [# th:utext="${modelVarName}" /].setCreateDate(nowDate);
+        [# th:utext="${modelVarName}" /].setUpdateDate(nowDate);
+        return [# th:utext="${modelVarName}" /]Dao.save[# th:utext="${modelName}" /]([# th:utext="${modelVarName}" /]);
+    }
+
+    /**
+     * 更新[# th:utext="${modelDesc}" /]对象
+     *
+     * @param [# th:utext="${modelVarName}" /] [# th:utext="${modelDesc}" /]对象
+     * @return  更新影响的记录数
+     */
+    @Override
+    public int update[# th:utext="${modelName}" /]([# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /]) {
+        [# th:utext="${modelVarName}" /].setUpdateDate(new Date());
+        return  [# th:utext="${modelVarName}" /]Dao.update[# th:utext="${modelName}" /]([# th:utext="${modelVarName}" /]);
+    }
+
+    /**
+     * 根据主键删除[# th:utext="${modelDesc}" /]
+     *
+     * @param [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/] 主键
+     * @return  删除影响的记录数
+     */
+    @Override
+    public int delete[# th:utext="${modelName}" /]([# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaType}" /] [# th:utext="${column.javaFieldName}" /][/][/]) {
+        return  [# th:utext="${modelVarName}" /]Dao.delete[# th:utext="${modelName}" /]([# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/]);
+    }
+
+}
+

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.contextparamvalue.dao.ContextParamValueDao">
+
+    <!-- 结果集 -->
+    <resultMap id="ContextParamValueResultMap" type="com.chengxuunion.generator.business.contextparamvalue.model.ContextParamValue">
+    
+        <id column="id" property="id" />
+        
+        <result column="instance_id" property="instanceId" />
+
+        <result column="param_id" property="paramId" />
+
+        <result column="param_value" property="paramValue" />
+
+        <result column="create_date" property="createDate" />
+
+        <result column="update_date" property="updateDate" />
+
+        <result column="create_user_id" property="createUserId"/>
+
+        <association property="contextParam" javaType="com.chengxuunion.generator.business.contextparam.model.ContextParam">
+            <id column="param_id" property="id"/>
+            <result column="param_name" property="paramName"/>
+            <result column="param_code" property="paramCode"/>
+            <result column="param_type" property="paramType"/>
+            <result column="param_default_value" property="paramDefaultValue"/>
+        </association>
+    
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.instance_id,
+        t.param_id,
+        t.param_value,
+        t.create_date,
+        t.update_date,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询上下参数实例配置值列表 -->
+    <select id="listContextParamValue" resultMap="ContextParamValueResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            context_param_value t
+    </select>
+
+    <select id="listContextParamValueEnable" resultMap="ContextParamValueResultMap">
+        SELECT
+            v.id,
+            param.id AS "param_id",
+            param.param_name,
+            param.param_code,
+            param.param_type,
+            param.param_default_value,
+            v.param_value,
+            v.create_date,
+            v.update_date
+        FROM
+            context_param param
+        LEFT JOIN context_param_value v ON v.param_id = param.id AND v.instance_id = #{instanceId}
+        WHERE param.status = '1'
+            AND param.context_id = #{contextId}
+    </select>
+
+    <!-- 根据主键查询单个上下参数实例配置值对象 -->
+    <select id="getContextParamValue" resultMap="ContextParamValueResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            context_param_value t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存上下参数实例配置值对象 -->
+    <insert id="saveContextParamValue" parameterType="com.chengxuunion.generator.business.contextparamvalue.model.ContextParamValue">
+        INSERT INTO
+            context_param_value
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="instanceId != null">instance_id,</if>
+            <if test="paramId != null">param_id,</if>
+            <if test="paramValue != null and paramValue != ''">param_value,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="instanceId != null">#{instanceId},</if>
+            <if test="paramId != null">#{paramId},</if>
+            <if test="paramValue != null and paramValue != ''">#{paramValue},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+    
+    <insert id="saveContextParamValueBatch" parameterType="java.util.List">
+
+        <foreach collection="list" item="item" separator=";" >
+            INSERT INTO
+                context_param_value
+            <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">id,</if>
+                <if test="item.instanceId != null">instance_id,</if>
+                <if test="item.paramId != null">param_id,</if>
+                <if test="item.paramValue != null and item.paramValue != ''">param_value,</if>
+                <if test="item.createDate != null">create_date,</if>
+                <if test="item.updateDate != null">update_date,</if>
+                <if test="item.createUserId != null">create_user_id,</if>
+
+            </trim>
+            <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+                <if test="item.id != null">#{item.id},</if>
+                <if test="item.instanceId != null">#{item.instanceId},</if>
+                <if test="item.paramId != null">#{item.paramId},</if>
+                <if test="item.paramValue != null">#{item.paramValue},</if>
+                <if test="item.createDate != null">#{item.createDate},</if>
+                <if test="item.updateDate != null">#{item.updateDate},</if>
+                <if test="item.createUserId != null">#{item.createUserId},</if>
+
+            </trim>
+        </foreach>
+
+    </insert>
+
+    <!-- 更新上下参数实例配置值对象 -->
+    <update id="updateContextParamValue" parameterType="com.chengxuunion.generator.business.contextparamvalue.model.ContextParamValue">
+        UPDATE
+            context_param_value
+        <set>
+        
+            <if test="instanceId != null">instance_id = #{instanceId},</if>
+            
+            <if test="paramId != null">param_id = #{paramId},</if>
+            
+            <if test="paramValue != null and paramValue != ''">param_value = #{paramValue},</if>
+            
+            <if test="createDate != null">create_date = #{createDate},</if>
+            
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 更新上下参数实例配置值对象 -->
+    <update id="updateContextParamValueBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE
+                context_param_value
+            <set>
+                <if test="item.instanceId != null">instance_id = #{item.instanceId},</if>
+                <if test="item.paramId != null">param_id = #{item.paramId},</if>
+                <if test="item.paramValue != null and item.paramValue != ''">param_value = #{item.paramValue},</if>
+                <if test="item.createDate != null">create_date = #{item.createDate},</if>
+                <if test="item.updateDate != null">update_date = #{item.updateDate},</if>
+            </set>
+            WHERE
+            id = #{item.id}
+        </foreach>
+
+    </update>
+
+    <!-- 根据主键删除上下参数实例配置值 -->
+    <delete id="deleteContextParamValue">
+        DELETE FROM
+            context_param_value
+        WHERE
+            id = #{id}
+    </delete>
+
+    <!-- 根据参数实例ID删除上下文参数配置值 -->
+    <delete id="deleteContextParamValueByInstanceId">
+        DELETE FROM
+            context_param_value
+        WHERE
+            instance_id = #{instanceId}
+    </delete>
+
+</mapper>

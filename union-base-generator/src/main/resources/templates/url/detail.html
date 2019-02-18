@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout-open">
+<div th:fragment="content">
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+
+                <!-- 表单 -->
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">父URL</label>
+                        <div class="layui-input-block">
+                            <input type="text"
+                                   th:value="${url.parentUrl==null?'根节点':url.parentUrl.urlName}"
+                                   required  lay-verify="required"
+                                   placeholder="请输入父URL" autocomplete="off" class="layui-input" readonly>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">URL名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="urlName"
+                                    th:value="${url.urlName}"
+                                    required  lay-verify="required"
+                                    placeholder="请输入URL名称" autocomplete="off" class="layui-input"
+                                    readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">URL英文名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="urlNameEnglish"
+                                   th:value="${url.urlNameEnglish}"
+                                   placeholder="请输入URL英文名称" autocomplete="off"
+                                   class="layui-input"
+                                   readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">URL地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="url"
+                                    th:value="${url.url}"
+                                    required  lay-verify="required"
+                                    placeholder="请输入URL地址" autocomplete="off" class="layui-input"
+                                    readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">请求方法</label>
+                        <div class="layui-input-block">
+                            <select name="method" required lay-verify="required" disabled>
+                                <option value=""></option>
+                                <div th:each="method : ${methods}">
+                                    <option th:selected="${method == url.method}" th:value="${method}" th:text="${method}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="orderNum"
+                                   th:value="${url.orderNum}"
+                                   required  lay-verify="required|number"
+                                   placeholder="请输入排序号" autocomplete="off" class="layui-input"
+                                   readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否菜单</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="menuSwitch" th:checked="${url.menu == '1'}" lay-skin="switch" lay-text="是|否" disabled>
+                        </div>
+                    </div>
+                    <div th:class="${'layui-form-item ' + (url.menu=='1'?'':'hide')}" id="menu_icon">
+                        <label class="layui-form-label">菜单图标</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="icon"
+                                   th:value="${url.icon}" autocomplete="off" class="layui-input" readonly>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否启用</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="switch" th:checked="${url.status == '1'}" lay-skin="switch" lay-text="启用|禁用" disabled>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/url/detail.js'}"></script>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+    <link rel="stylesheet" th:href="${'/static/css/codegenerate/generate.css'}">
+    <link rel="stylesheet" th:href="${'/static/css/template/add.css'}">
+
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">代码生成</a>
+            </li>
+            <li class="active">代码生成</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 表单 -->
+                <form class="layui-form" action="">
+
+                    <div class="layui-form-item" id="child_template_container">
+                        <label class="layui-form-label">模版</label>
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" id="child_select_btn">
+                                选择模版
+                            </button>
+                            <div class="child-template-wapper">
+                                <ul class="child-template-list" id="child_template_list">
+                                    <!--<li title="删除" data-id="">
+                                        <span>mvn模版</span>
+                                        <i class="fa fa-close del-icon"></i>
+                                    </li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">代码文件名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="codeFileName" id="codeFileName"
+                                   required lay-verify="required"
+                                   placeholder="请输入代码文件名"
+                                   class="layui-input"/>
+                        </div>
+                    </div>
+
+                    <!--<div class="layui-form-item" id="context_container">
+                        <label class="layui-form-label">上下文</label>
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" id="context_select_btn">
+                                选择上下文
+                            </button>
+                            <div class="context-wapper">
+                                <ul class="child-template-list" id="context_list">
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <div class="collapse-wrapper" id="context_tab">
+                        <div class="layui-tab" lay-filter="tab-filter">
+                            <ul class="layui-tab-title hide-bottom">
+                                <!--<li class="layui-this">基础上下文</li>
+                                <li>数据库描述上下文</li>-->
+                            </ul>
+                            <div class="layui-tab-content">
+                                <!--<div class="layui-tab-item layui-show">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">参数配置实例</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="id" required  lay-verify="required"
+                                                   placeholder="请输入序号，主键" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">上下文2</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="id" required  lay-verify="required"
+                                                   placeholder="请输入序号，主键" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="save-generate-filter">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/codegenerate/generate.js'}"></script>

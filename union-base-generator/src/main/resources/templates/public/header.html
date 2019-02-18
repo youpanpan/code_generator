@@ -1,0 +1,87 @@
+<div id="navbar" class="navbar navbar-default ace-save-state">
+    <div class="navbar-container ace-save-state" id="navbar-container">
+
+        <!--/* 菜单展开、伸缩按钮 */-->
+        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+            <span class="sr-only">Toggle sidebar</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+
+        <!--/* 系统图标及名称 */-->
+        <div class="navbar-header pull-left">
+            <a href="index.html" class="navbar-brand">
+                <small>
+                    <i class="fa fa-leaf"></i>
+                    <span th:text="#{common.systemName}">代码生成平台</span>
+                </small>
+            </a>
+        </div>
+
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+
+                <!--/* 语言 */-->
+                <li class="light-blue dropdown-modal">
+
+                    <!--/* 语言切换 */-->
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <span class="lang-name" th:text="${session.language =='zh_CN'?'中文':'English'}">
+                            中文
+                        </span>
+                        <i class="ace-icon fa fa-caret-down"></i>
+                    </a>
+
+                    <!--/* 语言 */-->
+                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="javascript:void(0);" data-language="zh_CN" class="lang-link">中文</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" data-language="en_US" class="lang-link">English</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!--/* 用户信息 */-->
+                <li class="light-blue dropdown-modal">
+
+                    <!--/* 用户头像、名称 */-->
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" th:src="${'/user/manager/download/' + session.user.id}" src="assets/images/avatars/user.jpg" th:alt="头像"/>
+                        <span class="user-info">
+                            <small><span th:text="#{common.welcome}">欢迎</span>,</small>
+
+                            <span th:text="${session.user.userName}"></span>
+                        </span>
+                        <i class="ace-icon fa fa-caret-down"></i>
+                    </a>
+
+                    <!--/* 用户快捷操作：设置、用户信息、退出等 */-->
+                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="#">
+                                <i class="ace-icon fa fa-cog"></i>
+                                <span th:text="#{common.settings}">设置</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="profile.html">
+                                <i class="ace-icon fa fa-user"></i>
+                                <span th:text="#{common.profile}">个人信息</span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="logout-link">
+                                <i class="ace-icon fa fa-power-off"></i>
+                                <span th:text="#{common.logout}">注销</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div><!-- /.navbar-container -->
+</div>

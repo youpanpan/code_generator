@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.codegenerate.dao.CodeGenerateDao">
+
+    <!-- 结果集 -->
+    <resultMap id="CodeGenerateResultMap" type="com.chengxuunion.generator.business.codegenerate.model.CodeGenerate">
+    
+        <id column="id" property="id" />
+        
+        <result column="template_id" property="templateId" />
+
+        <result column="code_file_name" property="codeFileName" />
+
+        <result column="code_path" property="codePath" />
+
+        <result column="code_size" property="codeSize"/>
+        
+        <result column="create_date" property="createDate" />
+
+        <result column="create_user_id" property="createUserId"/>
+
+        <association property="template" javaType="com.chengxuunion.generator.business.template.model.Template">
+            <id column="template_id" property="id"/>
+            <result column="template_name" property="templateName"/>
+            <result column="template_file_name" property="templateFileName"/>
+            <result column="template_type" property="templateType"/>
+        </association>
+
+        <association property="user" javaType="com.chengxuunion.generator.business.user.model.User">
+            <id column="create_user_id" property="id"/>
+            <result column="user_name" property="userName"/>
+        </association>
+    
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.template_id,
+        t.code_file_name,
+        t.code_path,
+        t.code_size,
+        t.create_date,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询代码生成记录列表 -->
+    <select id="listCodeGenerate" resultMap="CodeGenerateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,template.template_name
+            ,template.template_file_name
+            ,template.template_type
+            ,u.user_name
+        FROM
+            code_generate t
+        LEFT JOIN template template ON template.id = t.template_id
+        LEFT JOIN USER u ON u.id = t.create_user_id
+        WHERE 1=1
+        <if test="templateName != null and templateName != ''">
+            AND template.template_name LIKE '%' #{templateName} '%'
+        </if>
+        ORDER BY t.create_date DESC
+    </select>
+
+    <!-- 查询当前登录用户所生成的代码 -->
+    <select id="listCodeGenerateByUser" resultMap="CodeGenerateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,template.template_name
+            ,template.template_file_name
+            ,template.template_type
+            ,u.user_name
+        FROM
+        (
+            SELECT
+                up2.user_id
+            FROM
+                user_project up
+            LEFT JOIN USER u ON u.id = up.user_id
+            LEFT JOIN user_project up2 ON up2.project_id = up.project_id
+            WHERE u.id = #{userId}
+            GROUP BY up2.user_id
+        ) tmp
+        INNER JOIN code_generate t ON t.`create_user_id` = tmp.user_id
+        INNER JOIN template template ON template.id = t.template_id
+        LEFT JOIN USER u ON u.id = t.create_user_id
+        WHERE
+            (
+            tmp.`user_id` = #{userId}
+            OR (template.status = '1' AND template.open_type = '1')
+            )
+        <if test="templateName != null and templateName != ''">
+            AND template.template_name LIKE '%' #{templateName} '%'
+        </if>
+        ORDER BY t.create_date DESC
+    </select>
+
+    <!-- 根据主键查询单个代码生成记录对象 -->
+    <select id="getCodeGenerate" resultMap="CodeGenerateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,template.template_name
+            ,template.template_file_name
+            ,template.template_type
+        FROM
+            code_generate t
+        LEFT JOIN template template ON template.id = t.template_id
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存代码生成记录对象 -->
+    <insert id="saveCodeGenerate" parameterType="com.chengxuunion.generator.business.codegenerate.model.CodeGenerate">
+        INSERT INTO
+            code_generate
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="codeFileName != null and codeFileName != ''">code_file_name,</if>
+            <if test="codePath != null and codePath != ''">code_path,</if>
+            <if test="codeSize != null">code_size,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="codeFileName != null and codeFileName != ''">#{codeFileName},</if>
+            <if test="codePath != null and codePath != ''">#{codePath},</if>
+            <if test="codeSize != null">#{codeSize},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+
+    <!-- 更新代码生成记录对象 -->
+    <update id="updateCodeGenerate" parameterType="com.chengxuunion.generator.business.codegenerate.model.CodeGenerate">
+        UPDATE
+            code_generate
+        <set>
+        
+            <if test="templateId != null">template_id = #{templateId},</if>
+
+            <if test="codeFileName != null and codeFileName != ''">code_file_name = #{codeFileName},</if>
+
+            <if test="codePath != null and codePath != ''">code_path = #{codePath},</if>
+
+            <if test="codeSize != null">code_size = #{codeSize},</if>
+
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除代码生成记录 -->
+    <delete id="deleteCodeGenerate">
+        DELETE FROM
+            code_generate
+        WHERE
+            id = #{id}
+    </delete>
+
+</mapper>

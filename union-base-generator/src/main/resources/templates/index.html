@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+	<div th:fragment="content">
+
+		<link rel="stylesheet" th:href="${'/static/css/index/index.css'}">
+
+		<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+			<ul class="breadcrumb">
+				<li>
+					<i class="ace-icon fa fa-home home-icon"></i>
+					<a href="/" th:text="#{common.home}">首页</a>
+				</li>
+				<li class="active" th:text="#{common.dashboard}">面板</li>
+			</ul><!-- /.breadcrumb -->
+
+		</div>
+
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+
+					<div class="layui-fluid">
+
+						<!-- 统计信息 -->
+						<div class="layui-row layui-col-space15">
+							<!-- 家庭统计 -->
+							<div class="layui-col-xs12 layui-col-md12">
+								<div class="layui-card">
+									<div class="layui-card-header">数量统计</div>
+									<div class="layui-card-body">
+										<ul class="layui-row layui-col-space15">
+											<li class="layui-col-xs6  layui-col-md6  layui-col-lg4">
+												<a href="javascript:void(0);" class="layadmin-backlog-body">
+													<h3>模版引擎数量</h3>
+													<p><cite class="engine-number" id="engine_number">###</cite></p>
+												</a>
+											</li>
+											<li class="layui-col-xs6  layui-col-md6  layui-col-lg4">
+												<a href="javascript:void(0);" class="layadmin-backlog-body">
+													<h3>上下文数量</h3>
+													<p><cite class="context-number" id="context_number">###</cite></p>
+												</a>
+											</li>
+											<li class="layui-col-xs6 layui-col-md6  layui-col-lg4">
+												<a href="javascript:void(0);" class="layadmin-backlog-body">
+													<h3>项目数量</h3>
+													<p><cite id="project_number">###</cite></p>
+												</a>
+											</li>
+											<li class="layui-col-xs6 layui-col-md6  layui-col-lg4">
+												<a href="javascript:void(0);" class="layadmin-backlog-body">
+													<h3>用户数量</h3>
+													<p><cite class="user-number" id="user_number">###</cite></p>
+												</a>
+											</li>
+											<li class="layui-col-xs6 layui-col-md6  layui-col-lg4">
+												<a href="javascript:void(0);" class="layadmin-backlog-body">
+													<h3>模版数量</h3>
+													<p><cite class="template-number" id="template_number">###</cite></p>
+												</a>
+											</li>
+											<li class="layui-col-xs6 layui-col-md4">
+												<a href="javascript:void(0);" class="layadmin-backlog-body">
+													<h3>代码生成数量</h3>
+													<p><cite id="code_number">###</cite></p>
+												</a>
+											</li>
+										</ul>
+
+									</div>
+								</div>
+							</div>
+						<!-- /统计信息 -->
+
+						<!-- 统计信息 -->
+						<div class="layui-row layui-col-space15">
+							<!-- 家庭统计 -->
+							<div class="layui-col-md12">
+								<div class="layui-card">
+									<div class="layui-card-header">数据变化趋势</div>
+									<div class="layui-card-body">
+										<div class="layui-carousel layadmin-carousel" id="change_carousel" lay-filter="change_carousel">
+											<div carousel-item>
+												<div class="layui-row layui-col-space15">
+													<form class="layui-form" action="">
+														<div class="layui-row">
+															<div class="layui-col-xs4"><span class="chart-title">代码生成统计</span></div>
+															<div class="layui-col-xs4">&nbsp;</div>
+															<div class="layui-col-xs4">
+																<select name="city" lay-verify="" lay-filter="code_statistics_type">
+																	<option value="1">近一周</option>
+																	<option value="2">近一个月</option>
+																	<option value="3">近一年</option>
+																</select>
+															</div>
+														</div>
+													</form>
+													<div id="code_number_chart" class="common-chart"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /家庭统计 -->
+
+						</div>
+						<!-- /统计信息 -->
+
+					</div>
+
+
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div><!-- /.page-content -->
+	</div>
+</html>
+
+<script th:src="${'/static/js/echarts.min.js'}"></script>
+<script th:src="${'/static/js/index/index.js'}"></script>

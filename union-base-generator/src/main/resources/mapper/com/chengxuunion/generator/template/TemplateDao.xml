@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.template.dao.TemplateDao">
+
+    <!-- 结果集 -->
+    <resultMap id="TemplateResultMap" type="com.chengxuunion.generator.business.template.model.Template">
+    
+        <id column="id" property="id" />
+
+        <result column="template_name" property="templateName" />
+        
+        <result column="template_desc" property="templateDesc" />
+        
+        <result column="template_path" property="templatePath" />
+
+        <result column="template_file_name" property="templateFileName" />
+
+        <result column="template_file_size" property="templateFileSize" />
+
+        <result column="template_type" property="templateType" />
+        
+        <result column="status" property="status" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="update_date" property="updateDate" />
+        
+        <result column="order_num" property="orderNum" />
+
+        <result column="engine_id" property="engineId"/>
+
+        <result column="create_user_id" property="createUserId"/>
+
+        <result column="open_type" property="openType"/>
+
+        <association property="engine" javaType="com.chengxuunion.generator.business.engine.model.Engine">
+            <id column="engine_id" property="id"/>
+            <result column="engine_name" property="engineName"/>
+        </association>
+
+        <association property="user" javaType="com.chengxuunion.generator.business.user.model.User">
+            <id column="create_user_id" property="id"/>
+            <result column="user_name" property="userName"/>
+        </association>
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.template_name,
+        t.template_desc,
+        t.template_path,
+        t.template_file_name,
+        t.template_file_size,
+        t.template_type,
+        t.status,
+        t.create_date,
+        t.update_date,
+        t.order_num,
+        t.engine_id,
+        t.create_user_id,
+        t.open_type
+        
+    </sql>
+
+    <!-- 查询模版列表 -->
+    <select id="listTemplate" resultMap="TemplateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,e.engine_name
+            ,u.user_name
+        FROM
+            template t
+        LEFT JOIN engine e ON e.id = t.engine_id
+        LEFT JOIN user u ON u.id = t.create_user_id
+        WHERE 1=1
+        <if test="templateType != null and templateType != ''">
+            AND t.template_type = #{templateType}
+        </if>
+        <if test="status != null and status != ''">
+            AND t.status = #{status}
+        </if>
+        <if test="templateName != null and templateName != ''">
+            AND t.template_name LIKE '%' #{templateName} '%'
+        </if>
+        ORDER BY t.order_num DESC
+    </select>
+
+    <!-- 查询当前登录用户所能访问的模版列表 -->
+    <select id="listTemplateByUser" resultMap="TemplateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,e.engine_name
+            ,u.user_name
+        FROM
+        (
+            SELECT
+                up2.user_id
+            FROM
+                user_project up
+            LEFT JOIN USER u ON u.id = up.user_id
+            LEFT JOIN user_project up2 ON up2.project_id = up.project_id
+            WHERE u.id = #{userId}
+            GROUP BY up2.user_id
+        ) tmp
+        INNER JOIN template t ON t.`create_user_id` = tmp.user_id
+        LEFT JOIN engine e ON e.id = t.engine_id
+        LEFT JOIN user u ON u.id = t.create_user_id
+        WHERE
+            (
+            tmp.`user_id` = #{userId}
+            OR  (t.status = '1' AND t.`open_type`='1')
+            )
+        <if test="templateType != null and templateType != ''">
+            AND t.template_type = #{templateType}
+        </if>
+        <if test="status != null and status != ''">
+            AND t.status = #{status}
+        </if>
+        <if test="templateName != null and templateName != ''">
+            AND t.template_name LIKE '%' #{templateName} '%'
+        </if>
+        ORDER BY t.order_num DESC
+    </select>
+
+    <!-- 根据主键查询单个模版对象 -->
+    <select id="getTemplate" resultMap="TemplateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,e.engine_name
+        FROM
+            template t
+        LEFT JOIN engine e ON e.id = t.engine_id
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存模版对象 -->
+    <insert id="saveTemplate" parameterType="com.chengxuunion.generator.business.template.model.Template">
+        INSERT INTO
+            template
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="templateName != null and templateName != ''">template_name,</if>
+            <if test="templateDesc != null and templateDesc != ''">template_desc,</if>
+            <if test="templatePath != null and templatePath != ''">template_path,</if>
+            <if test="templateFileName != null and templateFileName != ''">template_file_name,</if>
+            <if test="templateFileSize != null">template_file_size,</if>
+            <if test="templateType != null and templateType != ''">template_type,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="engineId != null">engine_id,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="openType != null and openType != ''">open_type,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="templateName != null and templateName != ''">#{templateName},</if>
+            <if test="templateDesc != null and templateDesc != ''">#{templateDesc},</if>
+            <if test="templatePath != null and templatePath != ''">#{templatePath},</if>
+            <if test="templateFileName != null and templateFileName != ''">#{templateFileName},</if>
+            <if test="templateFileSize != null">#{templateFileSize},</if>
+            <if test="templateType != null and templateType != ''">#{templateType},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="engineId != null">#{engineId},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="openType != null and openType != ''">#{openType},</if>
+        
+        </trim>
+    </insert>
+
+    <!-- 更新模版对象 -->
+    <update id="updateTemplate" parameterType="com.chengxuunion.generator.business.template.model.Template">
+        UPDATE
+            template
+        <set>
+        
+            <if test="templateName != null and templateName != ''">template_name = #{templateName},</if>
+            
+            <if test="templateDesc != null and templateDesc != ''">template_desc = #{templateDesc},</if>
+            
+            <if test="templatePath != null and templatePath != ''">template_path = #{templatePath},</if>
+
+            <if test="templateFileName != null and templateFileName != ''">template_file_name = #{templateFileName},</if>
+
+            <if test="templateFileSize != null">template_file_size = #{templateFileSize},</if>
+
+            <if test="templateType != null and templateType != ''">template_type = #{templateType},</if>
+            
+            <if test="status != null and status != ''">status = #{status},</if>
+
+            <if test="createDate != null">create_date = #{createDate},</if>
+
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+
+            <if test="engineId != null">engine_id = #{engineId},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="openType != null and openType != ''">open_type = #{openType},</if>
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除模版 -->
+    <delete id="deleteTemplate">
+        DELETE FROM
+            template
+        WHERE
+            id = #{id}
+    </delete>
+
+</mapper>

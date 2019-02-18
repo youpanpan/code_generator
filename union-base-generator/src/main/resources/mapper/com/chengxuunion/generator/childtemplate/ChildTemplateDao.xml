@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.childtemplate.dao.ChildTemplateDao">
+
+    <!-- 结果集 -->
+    <resultMap id="ChildTemplateResultMap" type="com.chengxuunion.generator.business.childtemplate.model.ChildTemplate">
+    
+        <id column="id" property="id" />
+
+        <result column="parent_template_id" property="parentTemplateId" />
+        
+        <result column="child_template_id" property="childTemplateId" />
+        
+        <result column="status" property="status" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="update_date" property="updateDate" />
+
+        <result column="create_user_id" property="createUserId"/>
+
+        <association property="template" javaType="com.chengxuunion.generator.business.template.model.Template">
+            <id column="template_id" property="id"/>
+            <result column="template_name" property="templateName"/>
+            <result column="template_path" property="templatePath" />
+            <result column="engine_id" property="engineId"/>
+        </association>
+    
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.parent_template_id,
+        t.child_template_id,
+        t.status,
+        t.create_date,
+        t.update_date,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询子模版列表 -->
+    <select id="listChildTemplate" resultMap="ChildTemplateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            child_template t
+    </select>
+
+    <!-- 根据父模版ID查询子模版列表 -->
+    <select id="listChildTemplateByParentId" resultMap="ChildTemplateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>,
+            template.id AS "template_id",
+            template.template_name,
+            template.template_path,
+            template.engine_id
+        FROM
+            child_template t
+        LEFT JOIN template template ON template.id = t.child_template_id
+        WHERE t.parent_template_id = #{parentTemplateId}
+    </select>
+
+    <!-- 根据主键查询单个子模版对象 -->
+    <select id="getChildTemplate" resultMap="ChildTemplateResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            child_template t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存子模版对象 -->
+    <insert id="saveChildTemplate" parameterType="com.chengxuunion.generator.business.childtemplate.model.ChildTemplate">
+        INSERT INTO
+            child_template
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="parentTemplateId != null">parent_template_id,</if>
+            <if test="childTemplateId != null">child_template_id,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="parentTemplateId != null">#{parentTemplateId},</if>
+            <if test="childTemplateId != null">#{childTemplateId},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+
+    <!-- 批量保存子模版对象 -->
+    <insert id="saveChildTemplateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";" >
+            INSERT INTO
+                child_template
+            <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">id,</if>
+                <if test="item.parentTemplateId != null">parent_template_id,</if>
+                <if test="item.childTemplateId != null">child_template_id,</if>
+                <if test="item.status != null and item.status != ''">status,</if>
+                <if test="item.createDate != null">create_date,</if>
+                <if test="item.updateDate != null">update_date,</if>
+                <if test="item.createUserId != null">create_user_id,</if>
+
+            </trim>
+            <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">#{item.id},</if>
+                <if test="item.parentTemplateId != null">#{item.parentTemplateId},</if>
+                <if test="item.childTemplateId != null">#{item.childTemplateId},</if>
+                <if test="item.status != null and item.status != ''">#{item.status},</if>
+                <if test="item.createDate != null">#{item.createDate},</if>
+                <if test="item.updateDate != null">#{item.updateDate},</if>
+                <if test="item.createUserId != null">#{item.createUserId},</if>
+
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- 更新子模版对象 -->
+    <update id="updateChildTemplate" parameterType="com.chengxuunion.generator.business.childtemplate.model.ChildTemplate">
+        UPDATE
+            child_template
+        <set>
+            <if test="parentTemplateId != null">parent_template_id = #{parentTemplateId},</if>
+
+            <if test="childTemplateId != null">child_template_id = #{childTemplateId},</if>
+
+            <if test="status != null and status != ''">status = #{status},</if>
+
+            <if test="createDate != null">create_date = #{createDate},</if>
+
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 批量更新子模版对象 -->
+    <update id="updateChildTemplateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE
+                child_template
+            <set>
+                <if test="item.parentTemplateId != null">parent_template_id = #{item.parentTemplateId},</if>
+
+                <if test="item.childTemplateId != null">child_template_id = #{item.childTemplateId},</if>
+
+                <if test="item.status != null and item.status != ''">status = #{item.status},</if>
+
+                <if test="item.createDate != null">create_date = #{item.createDate},</if>
+
+                <if test="item.updateDate != null">update_date = #{item.updateDate},</if>
+
+            </set>
+            WHERE
+                id = #{item.id}
+        </foreach>
+    </update>
+
+    <!-- 根据主键删除子模版 -->
+    <delete id="deleteChildTemplate">
+        DELETE FROM
+            child_template
+        WHERE
+            id = #{id}
+    </delete>
+
+    <!-- 根据父模版删除所有的子模版 -->
+    <delete id="deleteChildTemplateByParentId">
+        DELETE FROM
+            child_template
+        WHERE
+            parent_template_id = #{parentTemplateId}
+    </delete>
+
+</mapper>

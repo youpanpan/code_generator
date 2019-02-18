@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">用户</a>
+            </li>
+            <li><a href="#">用户</a></li>
+            <li class="active">编辑</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 返回栏 -->
+                <div class="j-back-bar">
+                    <div class="j-back-btn-group">
+                        <button class="btn btn-white btn-success btn-round j-step-backward">
+                            <i class="ace-icon fa fa-backward "></i>
+                            返回
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 表单 -->
+                <form class="layui-form" action="">
+                    <input type="hidden" name="id" th:value="${user.id}"/>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="userName"
+                                    th:value="${user.userName}"
+                                    required  lay-verify="required"
+                                   placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">注册邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="email"
+                                    th:value="${user.email}"
+                                    required  lay-verify="required"
+                                   placeholder="请输入注册邮箱" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户头像</label>
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" id="headphoto_file_btn">
+                                <i class="layui-icon">&#xe67c;</i>上传用户头像
+                            </button>
+                            <div class="img-container">
+                                <img th:src="${'/user/manager/download/'+ user.id}" alt="用户头像" class="form-img"/>
+                            </div>
+                            <button class="hide" id="upload_btn"></button>
+                            <input type="hidden" name="headPhoto" id="headPhoto" th:value="${user.headPhoto}"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="switch" th:checked="${user.status=='1'}" lay-skin="switch" lay-text="启用|禁用">
+                        </div>
+                    </div>
+                    
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="update-user-filter" id="save_user">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/user/update.js'}"></script>

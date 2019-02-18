@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">用户</a>
+            </li>
+            <li><a href="#">用户</a></li>
+            <li class="active">查看</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 返回栏 -->
+                <div class="j-back-bar">
+                    <div class="j-back-btn-group">
+                        <button class="btn btn-white btn-success btn-round j-step-backward">
+                            <i class="ace-icon fa fa-backward "></i>
+                            返回
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 表单 -->
+                <form class="layui-form" action="">
+                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="userName"
+                                    th:value="${user.userName}"
+                                    required  lay-verify="required"
+                                    placeholder="请输入用户名" autocomplete="off" class="layui-input"
+                                    readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">注册邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="email"
+                                    th:value="${user.email}"
+                                    required  lay-verify="required"
+                                    placeholder="请输入注册邮箱" autocomplete="off" class="layui-input"
+                                    readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户头像</label>
+                        <div class="layui-input-block">
+                            <div class="img-container">
+                                <img th:src="${'/user/manager/download/'+ user.id}" alt="用户头像" class="form-img"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="switch" th:checked="${user.status=='1'}" lay-skin="switch" lay-text="启用|禁用" disabled>
+                        </div>
+                    </div>
+                    
+                </form>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/user/detail.js'}"></script>

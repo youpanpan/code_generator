@@ -1,0 +1,25 @@
+.child-template-list{
+    padding-top: 12px;
+}
+
+.child-template-list li{
+    float: left;
+    line-height: 36px;
+    padding: 4px 12px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #eee;
+}
+
+.child-template-list li:hover{
+    border-color: red;
+    cursor: pointer;
+}
+
+.child-template-list li:hover .del-icon{
+    color: red;
+}
+
+.file-link{
+    line-height: 38px;
+}

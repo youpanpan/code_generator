@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+    <link rel="stylesheet" th:href="${'/static/css/user/index.css'}">
+
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">用户</a>
+            </li>
+            <li class="active">用户</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 搜索栏 -->
+                <div class="j-search-form-bar">
+                    <form class="layui-form">
+                        <div class="j-form-group">
+                            <label class="layui-form-label j-form-label">用户名称</label>
+                            <div class="layui-input-block j-input-block">
+                                <input type="text" autocomplete="off" id="userName" class="layui-input j-w-200">
+                            </div>
+                        </div>
+
+                        <div class="j-form-btn-group">
+                            <button class="btn btn-white btn-success btn-round" id="j-search-btn">
+                                <i class="ace-icon fa fa-search "></i>
+                                搜索
+                            </button>
+                            <button class="btn btn-white btn-default btn-round" type="reset">
+                                <i class="ace-icon fa fa-reply "></i>
+                                重置
+                            </button>
+                            <button class="btn btn-white btn-info btn-bold" id="add_user_btn">
+                                <i class="ace-icon fa fa-plus-circle bigger-120 blue"></i>
+                                新增
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                <table class="layui-hide img-table" id="listDataTable01" lay-filter="listDataTable01Filter"></table>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/user/index.js'}"></script>
+
+<script type="text/html" id="opt-col">
+    <a class="blue table-oper" href="javascript:void(0);" title="查看" lay-event="detail">
+        <i class="ace-icon fa fa-eye bigger-130"></i>
+    </a>
+    <a class="green table-oper" href="javascript:void(0);" title="编辑" lay-event="edit">
+        <i class="ace-icon fa fa-pencil bigger-130"></i>
+    </a>
+    <a class="purple table-oper" href="javascript:void(0);" title="重置密码" lay-event="resetpassword">
+        <i class="ace-icon fa fa-refresh bigger-130"></i>
+    </a>
+    <a class="pink table-oper" href="javascript:void(0);" title="用户角色" lay-event="userrole">
+        <i class="ace-icon fa fa-group bigger-130"></i>
+    </a>
+    <a class="red table-oper" href="javascript:void(0);" title="删除" lay-event="delete">
+        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+    </a>
+</script>
+
+<!-- 状态模版 -->
+<script type="text/html" id="statusTpl">
+    {{# if (d.status == 1) { }}
+    <input type="checkbox" checked value="{{d.id}}" lay-filter="statusSwitch" lay-skin="switch" lay-text="启用|禁用"/>
+    {{# } else { }}
+    <input type="checkbox" value="{{d.id}}" lay-filter="statusSwitch" lay-skin="switch" lay-text="启用|禁用"/>
+    {{# } }}
+</script>
+
+<!-- 头像模版 -->
+<script type="text/html" id="headPhotoTpl">
+    <img src="/user/manager/download/{{d.id}}" alt="用户头像" class="table-img"/>
+</script>

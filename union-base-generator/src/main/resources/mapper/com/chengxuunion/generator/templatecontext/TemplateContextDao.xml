@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.templatecontext.dao.TemplateContextDao">
+
+    <!-- 结果集 -->
+    <resultMap id="TemplateContextResultMap" type="com.chengxuunion.generator.business.templatecontext.model.TemplateContext">
+    
+        <id column="id" property="id" />
+
+        <result column="template_id" property="templateId" />
+        
+        <result column="context_id" property="contextId" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="create_user_id" property="createUserId" />
+
+        <association property="context" javaType="com.chengxuunion.generator.business.context.model.Context">
+            <id column="context_id" property="id"/>
+            <result column="context_name" property="contextName"/>
+        </association>
+
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.template_id,
+        t.context_id,
+        t.create_date,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询模版依赖的上下文列表 -->
+    <select id="listTemplateContext" resultMap="TemplateContextResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            template_context t
+    </select>
+
+    <!-- 查询模版ID依赖的上下文列表 -->
+    <select id="listTemplateContextByTemplateId" resultMap="TemplateContextResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,c.context_name
+        FROM
+            template_context t
+        LEFT JOIN context c ON c.id = t.context_id
+        WHERE t.template_id = #{templateId}
+        ORDER BY c.order_num ASC
+    </select>
+
+    <!-- 根据主键查询单个模版依赖的上下文对象 -->
+    <select id="getTemplateContext" resultMap="TemplateContextResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            template_context t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存模版依赖的上下文对象 -->
+    <insert id="saveTemplateContext" parameterType="com.chengxuunion.generator.business.templatecontext.model.TemplateContext">
+        INSERT INTO
+            template_context
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="contextId != null">context_id,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="contextId != null">#{contextId},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+
+    <insert id="saveTemplateContextBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            INSERT INTO
+                template_context
+
+            <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">id,</if>
+                <if test="item.templateId != null">template_id,</if>
+                <if test="item.contextId != null">context_id,</if>
+                <if test="item.createDate != null">create_date,</if>
+                <if test="item.createUserId != null">create_user_id,</if>
+
+            </trim>
+            <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">#{item.id},</if>
+                <if test="item.templateId != null">#{item.templateId},</if>
+                <if test="item.contextId != null">#{item.contextId},</if>
+                <if test="item.createDate != null">#{item.createDate},</if>
+                <if test="item.createUserId != null">#{item.createUserId},</if>
+
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- 更新模版依赖的上下文对象 -->
+    <update id="updateTemplateContext" parameterType="com.chengxuunion.generator.business.templatecontext.model.TemplateContext">
+        UPDATE
+            template_context
+        <set>
+        
+            <if test="templateId != null">template_id = #{templateId},</if>
+
+            <if test="contextId != null">context_id = #{contextId},</if>
+
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除模版依赖的上下文 -->
+    <delete id="deleteTemplateContext">
+        DELETE FROM
+            template_context
+        WHERE
+            id = #{id}
+    </delete>
+
+    <!-- 删除指定模版ID依赖的上下文 -->
+    <delete id="deleteTemplateContextByTemplateId">
+        DELETE FROM
+            template_context
+        WHERE
+            template_id = #{templateId}
+    </delete>
+
+</mapper>

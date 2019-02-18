@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout-login">
+<div th:fragment="content">
+	<link rel="stylesheet" th:href="${'/static/css/login/login.css'}">
+
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-1">
+			<div class="login-container">
+				<div class="center">
+					<h1>
+						<i class="ace-icon fa fa-leaf green"></i>
+						<span class="white" id="id-text2"  th:text="#{common.systemName}">代码生成平台</span>
+					</h1>
+					<h4 class="blue" id="id-company-text">&copy; <span th:text="#{common.companyName}">程序联盟</span></h4>
+				</div>
+
+				<div class="space-6"></div>
+
+				<div class="position-relative">
+					<div id="login-box" class="login-box visible widget-box no-border">
+						<div class="widget-body">
+							<div class="widget-main">
+								<h4 class="header blue lighter bigger">
+									<i class="ace-icon fa fa-coffee green"></i>
+									<span th:text="#{login.loginTip}">请输入登录信息</span>
+								</h4>
+
+								<div class="space-6"></div>
+
+								<form class="layui-form">
+									<fieldset>
+										<label class="block clearfix">
+											<span class="block input-icon input-icon-right">
+												<input type="text" name="userName" class="form-control" required lay-verify="required"
+													   th:placholder="#{login.userNameTip}" placeholder="用户名/邮箱" />
+												<i class="ace-icon fa fa-user"></i>
+											</span>
+										</label>
+
+										<label class="block clearfix">
+											<span class="block input-icon input-icon-right">
+												<input type="password" name="password" class="form-control"
+													   required lay-verify="required"
+													   th:placeholder="#{login.passwordTip}" placeholder="密码" />
+												<i class="ace-icon fa fa-lock"></i>
+											</span>
+										</label>
+
+										<div class="space"></div>
+
+										<div class="clearfix">
+											<div class="layui-input-inline">
+												<input type="checkbox" name="rember" th:title="#{login.remberPassword}" title="记住密码" lay-skin="primary">
+											</div>
+
+											<button type="button" class="width-35 pull-right btn btn-sm btn-primary" lay-submit lay-filter="login-filter">
+												<i class="ace-icon fa fa-key"></i>
+												<span class="bigger-110" th:text="#{login.login}">登录</span>
+											</button>
+										</div>
+
+										<div class="space-4"></div>
+									</fieldset>
+								</form>
+							</div><!-- /.widget-body -->
+						</div><!-- /.login-box -->
+					</div><!-- /.position-relative -->
+
+					<div class="navbar-fixed-top align-right">
+						<br />
+						&nbsp;
+						<a href="javascript:void(0);" data-language="zh_CN" class="lang-link">中文</a>
+						&nbsp;
+						<a href="javascript:void(0);" data-language="en_US" class="lang-link">English</a>
+						&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+
+						&nbsp;
+						<a id="btn-login-dark" href="#" th:text="#{login.dark}">Dark</a>
+						&nbsp;
+						<span class="blue">/</span>
+						&nbsp;
+						<a id="btn-login-blur" href="#" th:text="#{login.blur}">Blur</a>
+						&nbsp;
+						<span class="blue">/</span>
+						&nbsp;
+						<a id="btn-login-light" href="#" th:text="#{login.light}">Light</a>
+						&nbsp; &nbsp; &nbsp;
+					</div>
+				</div>
+			</div>
+		</div><!-- /.col -->
+	</div><!-- /.row -->
+</div>
+</html>
+
+<script th:src="${'/static/js/cookie-util.js'}"></script>
+<script th:src="${'/static/js/login/login.js'}"></script>

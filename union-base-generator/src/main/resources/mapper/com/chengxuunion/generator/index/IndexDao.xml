@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.index.dao.IndexDao">
+
+    <select id="listNumberStatistics" resultType="java.util.Map">
+        SELECT
+            'engine_number' AS typeName, COUNT(0) AS total
+        FROM
+            `engine`
+        UNION ALL
+        SELECT
+            'context_number' AS typeName, COUNT(0) AS total
+        FROM
+            context
+        UNION ALL
+        SELECT
+            'project_number' AS typeName, COUNT(0) AS total
+        FROM
+            project
+        UNION ALL
+        SELECT
+            'user_number' AS typeName, COUNT(0) AS total
+        FROM
+            user
+        UNION ALL
+        SELECT
+            'template_number' AS typeName, COUNT(0) AS total
+        FROM
+            template
+        UNION ALL
+        SELECT
+            'code_number' AS typeName, COUNT(0) AS total
+        FROM
+            code_generate
+    </select>
+
+    <select id="listCodeNumber" resultType="java.util.Map">
+        <choose>
+            <!--周报表-->
+            <when test="type == 1">
+                SELECT DATE_FORMAT(code.create_date,'%m-%d') AS k, COUNT(0) AS v FROM code_generate code
+                WHERE  DATE(code.create_date) > DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                GROUP BY DATE_FORMAT(code.create_date,'%m-%d')
+            </when>
+            <!--月报表-->
+            <when test="type == 2">
+                SELECT DATE_FORMAT(code.create_date,'%m-%d') AS k, COUNT(0) AS v FROM code_generate code
+                WHERE  DATE(code.create_date) > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                GROUP BY DATE_FORMAT(code.create_date,'%m-%d')
+            </when>
+            <!--年报表-->
+            <when test="type == 3">
+                SELECT DATE_FORMAT(code.create_date,'%y-%m') AS k, COUNT(0) AS v FROM code_generate code
+                WHERE  DATE(code.create_date) > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+                GROUP BY DATE_FORMAT(code.create_date,'%y-%m')
+            </when>
+        </choose>
+    </select>
+
+</mapper>

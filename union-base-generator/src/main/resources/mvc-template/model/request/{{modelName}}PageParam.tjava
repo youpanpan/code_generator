@@ -1,0 +1,13 @@
+package [# th:utext="${basePackage}" /].model.request;
+
+import com.chengxuunion.generator.common.model.PageParam;
+
+/**
+ * @Author [# th:utext="${author}" /]
+ * @Description:
+ * @Date:创建时间: [# th:utext="${curDate}" /]
+ * @Modified By:
+ */
+public class [# th:utext="${modelName}" /]PageParam extends PageParam{
+
+}

@@ -1,0 +1,12 @@
+#.gitignore
+/target/
+
+# Editor directories and files
+.project
+.classpath
+/.settings/
+
+# About IntelliJ
+*.iml
+/.idea/
+/out/

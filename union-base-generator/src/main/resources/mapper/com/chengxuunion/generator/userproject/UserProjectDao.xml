@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.userproject.dao.UserProjectDao">
+
+    <!-- 结果集 -->
+    <resultMap id="UserProjectResultMap" type="com.chengxuunion.generator.business.userproject.model.UserProject">
+    
+        <id column="id" property="id" />
+        
+        
+        <result column="user_id" property="userId" />
+        
+        <result column="project_id" property="projectId" />
+        
+        <result column="admin" property="admin" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="update_date" property="updateDate" />
+        
+        <result column="create_user_id" property="createUserId" />
+
+        <association property="user" javaType="com.chengxuunion.generator.business.user.model.User">
+            <id column="user_id" property="id"/>
+            <result column="user_name" property="userName"/>
+        </association>
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.user_id,
+        t.project_id,
+        t.admin,
+        t.create_date,
+        t.update_date,
+        t.create_user_id
+        
+    </sql>
+
+    <!-- 查询用户项目组列表 -->
+    <select id="listUserProject" resultMap="UserProjectResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            user_project t
+    </select>
+
+    <!-- 查询项目下所有用户 -->
+    <select id="listUserProjectByProjectId" resultMap="UserProjectResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,u.user_name
+        FROM
+            user_project t
+        LEFT JOIN user u ON t.user_id = u.id
+        WHERE t.project_id = #{projectId}
+        ORDER BY t.admin DESC
+    </select>
+
+    <!-- 根据主键查询单个用户项目组对象 -->
+    <select id="getUserProject" resultMap="UserProjectResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            user_project t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存用户项目组对象 -->
+    <insert id="saveUserProject" parameterType="com.chengxuunion.generator.business.userproject.model.UserProject">
+        INSERT INTO
+            user_project
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="projectId != null">project_id,</if>
+            <if test="admin != null and admin != ''">admin,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="admin != null and admin != ''">#{admin},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+        
+        </trim>
+    </insert>
+
+    <insert id="saveUserProjectBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            INSERT INTO
+                user_project
+
+            <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">id,</if>
+                <if test="item.userId != null">user_id,</if>
+                <if test="item.projectId != null">project_id,</if>
+                <if test="item.admin != null and item.admin != ''">admin,</if>
+                <if test="item.createDate != null">create_date,</if>
+                <if test="item.updateDate != null">update_date,</if>
+                <if test="item.createUserId != null">create_user_id,</if>
+
+            </trim>
+            <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+
+                <if test="item.id != null">#{item.id},</if>
+                <if test="item.userId != null">#{item.userId},</if>
+                <if test="item.projectId != null">#{item.projectId},</if>
+                <if test="item.admin != null and item.admin != ''">#{item.admin},</if>
+                <if test="item.createDate != null">#{item.createDate},</if>
+                <if test="item.updateDate != null">#{item.updateDate},</if>
+                <if test="item.createUserId != null">#{item.createUserId},</if>
+
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- 更新用户项目组对象 -->
+    <update id="updateUserProject" parameterType="com.chengxuunion.generator.business.userproject.model.UserProject">
+        UPDATE
+            user_project
+        <set>
+        
+            
+            
+            <if test="userId != null">user_id = #{userId},</if>
+            
+            
+            <if test="projectId != null">project_id = #{projectId},</if>
+            
+            
+            <if test="admin != null and admin != ''">admin = #{admin},</if>
+            
+            
+            <if test="createDate != null">create_date = #{createDate},</if>
+            
+            
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            
+            
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            
+        
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除用户项目组 -->
+    <delete id="deleteUserProject">
+        DELETE FROM
+            user_project
+        WHERE
+            id = #{id}
+    </delete>
+
+    <!-- 删除项目下的所有用户 -->
+    <delete id="deleteUserProjectByProjectId">
+        DELETE FROM
+            user_project
+        WHERE
+            project_id = #{projectId}
+    </delete>
+
+</mapper>

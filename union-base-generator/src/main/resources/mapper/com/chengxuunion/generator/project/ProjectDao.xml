@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.project.dao.ProjectDao">
+
+    <!-- 结果集 -->
+    <resultMap id="ProjectResultMap" type="com.chengxuunion.generator.business.project.model.Project">
+    
+        <id column="id" property="id" />
+
+        <result column="project_name" property="projectName" />
+        
+        <result column="project_desc" property="projectDesc" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="update_date" property="updateDate" />
+        
+        <result column="create_user_id" property="createUserId" />
+        
+        <result column="status" property="status" />
+    
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.project_name,
+        t.project_desc,
+        t.create_date,
+        t.update_date,
+        t.create_user_id,
+        t.status
+        
+    </sql>
+
+    <!-- 查询项目组列表 -->
+    <select id="listProject" resultMap="ProjectResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            project t
+        WHERE 1=1
+        <if test="projectName != null and projectName != ''">
+            AND t.project_name LIKE '%' #{projectName} '%'
+        </if>
+    </select>
+
+    <!-- 根据主键查询单个项目组对象 -->
+    <select id="getProject" resultMap="ProjectResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            project t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 保存项目组对象 -->
+    <insert id="saveProject" parameterType="com.chengxuunion.generator.business.project.model.Project">
+        INSERT INTO
+            project
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="projectName != null and projectName != ''">project_name,</if>
+            <if test="projectDesc != null and projectDesc != ''">project_desc,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="status != null and status != ''">status,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="projectName != null and projectName != ''">#{projectName},</if>
+            <if test="projectDesc != null and projectDesc != ''">#{projectDesc},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="status != null and status != ''">#{status},</if>
+        
+        </trim>
+    </insert>
+
+    <!-- 更新项目组对象 -->
+    <update id="updateProject" parameterType="com.chengxuunion.generator.business.project.model.Project">
+        UPDATE
+            project
+        <set>
+        
+            
+            
+            <if test="projectName != null and projectName != ''">project_name = #{projectName},</if>
+            
+            
+            <if test="projectDesc != null and projectDesc != ''">project_desc = #{projectDesc},</if>
+            
+            
+            <if test="createDate != null">create_date = #{createDate},</if>
+            
+            
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            
+            
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            
+            
+            <if test="status != null and status != ''">status = #{status},</if>
+            
+        
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除项目组 -->
+    <delete id="deleteProject">
+        DELETE FROM
+            project
+        WHERE
+            id = #{id}
+    </delete>
+
+</mapper>

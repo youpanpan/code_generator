@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">上下文参数配置</a>
+            </li>
+            <li><a href="#">上下文参数配置</a></li>
+            <li class="active">新增</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 返回栏 -->
+                <div class="j-back-bar">
+                    <div class="j-back-btn-group">
+                        <button class="btn btn-white btn-success btn-round j-step-backward">
+                            <i class="ace-icon fa fa-backward "></i>
+                            返回
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 表单 -->
+                <form class="layui-form" action="">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上下文</label>
+                        <div class="layui-input-block">
+                            <select name="contextId" lay-verify="required">
+                                <option value=""></option>
+                                <div th:each="context : ${contextList}">
+                                    <option th:value="${context.id}" th:text="${context.contextName}"></option>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">参数名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="paramName" required  lay-verify="required"
+                                   placeholder="请输入参数名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">参数标识</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="paramCode" required  lay-verify="required"
+                                   placeholder="请输入参数标识" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">参数默认值</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="paramDefaultValue"
+                                   placeholder="请输入参数默认值" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">参数类型</label>
+                        <div class="layui-input-block">
+                            <select name="paramType" lay-verify="required">
+                                <option value=""></option>
+                                <option value="1">字符串</option>
+                                <option value="2">数值</option>
+                                <option value="3">数组</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">参数描述</label>
+                        <div class="layui-input-block">
+                            <textarea name="paramDesc"
+                                   placeholder="请输入参数描述" autocomplete="off" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="orderNum" required  lay-verify="required"
+                                   placeholder="请输入排序号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="switch" lay-skin="switch" lay-text="启用|禁用">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="save-contextparam-filter">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/contextparam/add.js'}"></script>

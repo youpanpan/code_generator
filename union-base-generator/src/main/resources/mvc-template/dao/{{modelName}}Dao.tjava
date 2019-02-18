@@ -1,0 +1,59 @@
+package [# th:utext="${basePackage}" /].dao;
+
+import [# th:utext="${basePackage}" /].model.[# th:utext="${modelName}" /];
+import [# th:utext="${basePackage}" /].model.request.[# th:utext="${modelName}" /]PageParam;
+
+import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+/**
+ * @Author [# th:utext="${author}" /]
+ * @Description:    [# th:utext="${modelDesc}" /]Dao
+ * @Date:创建时间: [# th:utext="${curDate}" /]
+ * @Modified By:
+ */
+@Repository
+public interface [# th:utext="${modelName}" /]Dao {
+
+    /**
+     * 查询[# th:utext="${modelDesc}" /]列表
+     *
+     * @param [# th:utext="${modelVarName}" /]PageParam  参数对象
+     * @return  [# th:utext="${modelDesc}" /]列表
+     */
+    List<[# th:utext="${modelName}" /]> list[# th:utext="${modelName}" /]([# th:utext="${modelName}" /]PageParam [# th:utext="${modelVarName}" /]PageParam);
+
+    /**
+     * 根据主键查询单个[# th:utext="${modelDesc}" /]对象
+     *
+     * @param [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/] 主键
+     * @return  单个[# th:utext="${modelDesc}" /]对象
+     */
+    [# th:utext="${modelName}" /] get[# th:utext="${modelName}" /](@Param("[# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/]") [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaType}" /] [# th:utext="${column.javaFieldName}" /][/][/]);
+
+    /**
+     * 保存[# th:utext="${modelDesc}" /]对象
+     *
+     * @param [# th:utext="${modelVarName}" /] [# th:utext="${modelDesc}" /]对象
+     * @return  保存影响的记录数
+     */
+    int save[# th:utext="${modelName}" /]([# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /]);
+
+    /**
+     * 更新[# th:utext="${modelDesc}" /]对象
+     *
+     * @param [# th:utext="${modelVarName}" /] [# th:utext="${modelDesc}" /]对象
+     * @return  更新影响的记录数
+     */
+    int update[# th:utext="${modelName}" /]([# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /]);
+
+    /**
+     * 根据主键删除[# th:utext="${modelDesc}" /]
+     *
+     * @param [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/] 主键
+     * @return  删除影响的记录数
+     */
+    int delete[# th:utext="${modelName}" /](@Param("[# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaFieldName}" /][/][/]") [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.javaType}" /] [# th:utext="${column.javaFieldName}" /][/][/]);
+}

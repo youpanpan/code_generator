@@ -1,0 +1,16 @@
+.tree-search-bar {
+    position: fixed;
+    top: 0px;
+    right: 8px;
+    z-index: 999;
+    width: 100%;
+    background-color: #fff;
+}
+
+.tree-search-bar .j-form-btn-group{
+    margin-top: 4px;
+}
+
+#url_tree{
+    margin-top: 38px;
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chengxuunion.generator.business.user.dao.UserDao">
+
+    <!-- 结果集 -->
+    <resultMap id="UserResultMap" type="com.chengxuunion.generator.business.user.model.User">
+    
+        <id column="id" property="id" />
+        
+        <result column="user_name" property="userName" />
+        
+        <result column="email" property="email" />
+
+        <result column="password" property="password" />
+        
+        <result column="head_photo" property="headPhoto" />
+        
+        <result column="create_date" property="createDate" />
+        
+        <result column="update_date" property="updateDate" />
+        
+        <result column="status" property="status" />
+    
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        t.id,
+        t.user_name,
+        t.email,
+        t.head_photo,
+        t.create_date,
+        t.update_date,
+        t.status
+        
+    </sql>
+
+    <!-- 查询用户列表 -->
+    <select id="listUser" resultMap="UserResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            user t
+        WHERE 1=1
+        <if test="userName != null and userName != ''">
+            AND t.user_name LIKE '%' #{userName} '%'
+        </if>
+        <if test="status != null and status != ''">
+            AND t.status = #{status}
+        </if>
+        ORDER BY t.update_date DESC
+    </select>
+
+    <!-- 根据主键查询单个用户对象 -->
+    <select id="getUser" resultMap="UserResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            user t
+        WHERE
+            t.id = #{id}
+    </select>
+
+    <!-- 根据用户名/密码查询用户 -->
+    <select id="getUserByUserNameOrEmail" resultMap="UserResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+            ,t.password
+        FROM
+            user t
+        WHERE (t.user_name = #{account} OR t.email = #{account})
+    </select>
+
+    <!-- 保存用户对象 -->
+    <insert id="saveUser" parameterType="com.chengxuunion.generator.business.user.model.User">
+        INSERT INTO
+            user
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">id,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="headPhoto != null and headPhoto != ''">head_photo,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+            <if test="status != null and status != ''">status,</if>
+        
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        
+            <if test="id != null">#{id},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="headPhoto != null and headPhoto != ''">#{headPhoto},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="status != null and status != ''">#{status},</if>
+        
+        </trim>
+    </insert>
+
+    <!-- 更新用户对象 -->
+    <update id="updateUser" parameterType="com.chengxuunion.generator.business.user.model.User">
+        UPDATE
+            user
+        <set>
+
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+
+            <if test="email != null and email != ''">email = #{email},</if>
+            
+            <if test="password != null and password != ''">password = #{password},</if>
+
+            <if test="headPhoto != null and headPhoto != ''">head_photo = #{headPhoto},</if>
+
+            <if test="createDate != null">create_date = #{createDate},</if>
+
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+
+            <if test="status != null and status != ''">status = #{status},</if>
+
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 根据主键删除用户 -->
+    <delete id="deleteUser">
+        DELETE FROM
+            user
+        WHERE
+            id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout-open">
+<div th:fragment="content">
+    <link rel="stylesheet" th:href="${'/static/css/template/list-select.css'}">
+
+    <!-- 已选中的数据 -->
+    <input type="hidden" id="ids" th:value="${ids}"/>
+    <input type="hidden" id="names" th:value="${names}"/>
+    <input type="hidden" id="maxNum" th:value="${maxNum}"/>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-8">
+                <!-- 搜索栏 -->
+                <div class="j-search-form-bar">
+                    <form class="layui-form">
+                        <div class="j-form-group">
+                            <label class="layui-form-label j-form-label">角色名称</label>
+                            <div class="layui-input-block j-input-block">
+                                <input type="text" autocomplete="off" id="roleName" class="layui-input j-w-200">
+                            </div>
+                        </div>
+
+                        <div class="j-form-btn-group">
+                            <button class="btn btn-white btn-success btn-round" id="j-search-btn">
+                                <i class="ace-icon fa fa-search "></i>
+                                搜索
+                            </button>
+                            <button class="btn btn-white btn-default btn-round" type="reset">
+                                <i class="ace-icon fa fa-reply "></i>
+                                重置
+                            </button>
+                            <button class="btn btn-white btn-info btn-bold" id="ok_btn">
+                                <i class="ace-icon fa fa-hand-peace-o bigger-120 blue"></i>
+                                确定
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                <table class="layui-hide" id="listDataTable01" lay-filter="listDataTable01Filter"></table>
+
+            </div>
+            <div class="col-xs-4">
+                <div class="has-select-container">
+                    <div>
+                        <p class="has-select-title">已选角色<span class="has-select-clear" id="has_select_clear">清除</span></p>
+                    </div>
+                    <div>
+                        <ul class="has-select-list" id="has_select_list">
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>
+
+<script th:src="${'/static/js/role/list-select.js'}"></script>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout-open">
+<div th:fragment="content">
+
+    <link rel="stylesheet" th:href="${'/static/css/url/tree-select.css'}">
+
+    <!-- 已选中的数据 -->
+    <input type="hidden" id="ids" th:value="${ids}"/>
+
+    <div class="page-content">
+
+        <div class="row">
+            <!-- 搜索栏 -->
+            <div class="j-search-form-bar tree-search-bar">
+                <form class="layui-form">
+                    <div class="j-form-group">
+                        <label class="layui-form-label j-form-label"></label>
+                        <div class="layui-input-block j-input-block">
+
+                        </div>
+                    </div>
+
+                    <div class="j-form-btn-group">
+                        <button class="btn btn-white btn-info btn-bold" id="ok_btn">
+                            <i class="ace-icon fa fa-hand-peace-o bigger-120 blue"></i>
+                            确定
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div id="url_tree" ></div>
+        </div>
+    </div>
+
+</div>
+</html>
+
+<script th:src="${'/static/js/url/tree-select.js'}"></script>

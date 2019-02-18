@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="[# th:utext="${basePackage}" /].dao.[# th:utext="${modelName}" /]Dao">
+
+    <!-- 结果集 -->
+    <resultMap id="[# th:utext="${modelName}" /]ResultMap" type="[# th:utext="${basePackage}" /].model.[# th:utext="${modelName}" /]">
+    [# th:each="column : ${columns}"]
+        [# th:if="${column.isPrimary} eq 1"]<id column="[# th:utext="${column.columnName}" /]" property="[# th:utext="${column.javaFieldName}" /]" />[/]
+        [# th:if="${column.isPrimary} ne 1"]<result column="[# th:utext="${column.columnName}" /]" property="[# th:utext="${column.javaFieldName}" /]" />[/]
+    [/]
+    </resultMap>
+
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMN">
+        [# th:each="column : ${columns}"]t.[# th:utext="${column.columnName}" /][# th:if="${columnStat.count} ne ${columnStat.size}"],[/]
+        [/]
+    </sql>
+
+    <!-- 查询[# th:utext="${modelDesc}" /]列表 -->
+    <select id="list[# th:utext="${modelName}" /]" resultMap="[# th:utext="${modelName}" /]ResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            [# th:utext="${table.tableName}" /] t
+    </select>
+
+    <!-- 根据主键查询单个[# th:utext="${modelDesc}" /]对象 -->
+    <select id="get[# th:utext="${modelName}" /]" resultMap="[# th:utext="${modelName}" /]ResultMap">
+        SELECT
+            <include refid="ALL_COLUMN"/>
+        FROM
+            [# th:utext="${table.tableName}" /] t
+        WHERE
+            [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"]t.[# th:utext="${column.columnName}" /] = #{[# th:utext="${column.javaFieldName}" /]}[/][/]
+    </select>
+
+    <!-- 保存[# th:utext="${modelDesc}" /]对象 -->
+    <insert id="save[# th:utext="${modelName}" /]" parameterType="[# th:utext="${basePackage}" /].model.[# th:utext="${modelName}" /]">
+        INSERT INTO
+            [# th:utext="${table.tableName}" /]
+
+        <trim prefix=" ( " suffix=" ) "  suffixOverrides=",">
+        [# th:each="column : ${columns}"]
+            <if test="[# th:utext="${column.javaFieldName}" /] != null[# th:if="${column.javaType} eq String"] and [# th:utext="${column.javaFieldName}" /] != ''[/]">[# th:utext="${column.columnName}" /],</if>
+        [/]
+        </trim>
+        <trim prefix=" VALUES( " suffix=" ) "  suffixOverrides=",">
+        [# th:each="column : ${columns}"]
+            <if test="[# th:utext="${column.javaFieldName}" /] != null[# th:if="${column.javaType} eq String"] and [# th:utext="${column.javaFieldName}" /] != ''[/]">#{[# th:utext="${column.javaFieldName}" /]},</if>
+        [/]
+        </trim>
+    </insert>
+
+    <!-- 更新[# th:utext="${modelDesc}" /]对象 -->
+    <update id="update[# th:utext="${modelName}" /]" parameterType="[# th:utext="${basePackage}" /].model.[# th:utext="${modelName}" /]">
+        UPDATE
+            [# th:utext="${table.tableName}" /]
+        <set>
+        [# th:each="column : ${columns}"]
+            [# th:if="${column.isPrimary} ne 1"]
+            <if test="[# th:utext="${column.javaFieldName}" /] != null[# th:if="${column.javaType} eq String"] and [# th:utext="${column.javaFieldName}" /] != ''[/]">[# th:utext="${column.columnName}" /] = #{[# th:utext="${column.javaFieldName}" /]},</if>
+            [/]
+        [/]
+        </set>
+        WHERE
+            [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.columnName}" /] = #{[# th:utext="${column.javaFieldName}" /]}[/][/]
+    </update>
+
+    <!-- 根据主键删除[# th:utext="${modelDesc}" /] -->
+    <delete id="delete[# th:utext="${modelName}" /]">
+        DELETE FROM
+            [# th:utext="${table.tableName}" /]
+        WHERE
+            [# th:each="column : ${columns}"][# th:if="${column.isPrimary} eq 1"][# th:utext="${column.columnName}" /] = #{[# th:utext="${column.javaFieldName}" /]}[/][/]
+    </delete>
+
+</mapper>

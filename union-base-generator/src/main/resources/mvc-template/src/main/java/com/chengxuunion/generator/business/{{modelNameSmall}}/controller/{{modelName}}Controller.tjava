@@ -1,0 +1,74 @@
+package [# th:utext="${basePackage}" /].controller;
+
+import [# th:utext="${basePackage}" /].model.[# th:utext="${modelName}" /];
+import [# th:utext="${basePackage}" /].model.request.[# th:utext="${modelName}" /]PageParam;
+import [# th:utext="${basePackage}" /].service.[# th:utext="${modelName}" /]Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import com.chengxuunion.generator.common.controller.BaseController;
+
+/**
+ * @Author [# th:utext="${author}" /]
+ * @Description:    [# th:utext="${modelDesc}" /]控制器
+ * @Date:创建时间: [# th:utext="${curDate}" /]
+ * @Modified By:
+ */
+@Controller
+@RequestMapping("/[# th:utext="${modelNameSmall}" /]/manager")
+public class [# th:utext="${modelName}" /]Controller extends BaseController {
+
+    @Autowired
+    private [# th:utext="${modelName}" /]Service [# th:utext="${modelVarName}" /]Service;
+
+    @GetMapping
+    public String index() {
+        return "/[# th:utext="${modelNameSmall}" /]/index";
+    }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public Object listPage([# th:utext="${modelName}" /]PageParam [# th:utext="${modelVarName}" /]PageParam) {
+        return [# th:utext="${modelVarName}" /]Service.list[# th:utext="${modelName}" /]Page([# th:utext="${modelVarName}" /]PageParam);
+    }
+
+    @GetMapping("/add")
+    public String add() {
+        return "/[# th:utext="${modelNameSmall}" /]/add";
+    }
+
+    @PostMapping("/do-add")
+    @ResponseBody
+    public Object doAdd([# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /]) {
+        return [# th:utext="${modelVarName}" /]Service.save[# th:utext="${modelName}" /]([# th:utext="${modelVarName}" /]);
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(Model model, @PathVariable("id") Long id) {
+        [# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /] = [# th:utext="${modelVarName}" /]Service.get[# th:utext="${modelName}" /](id);
+        model.addAttribute("[# th:utext="${modelVarName}" /]", [# th:utext="${modelVarName}" /]);
+        return "/[# th:utext="${modelNameSmall}" /]/update";
+    }
+
+    @PutMapping("/do-update")
+    @ResponseBody
+    public Object doUpdate([# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /]) {
+        return [# th:utext="${modelVarName}" /]Service.update[# th:utext="${modelName}" /]([# th:utext="${modelVarName}" /]);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public Object doDelete(@PathVariable("id") Long id) {
+        return [# th:utext="${modelVarName}" /]Service.delete[# th:utext="${modelName}" /](id);
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Long id) {
+        [# th:utext="${modelName}" /] [# th:utext="${modelVarName}" /] = [# th:utext="${modelVarName}" /]Service.get[# th:utext="${modelName}" /](id);
+        model.addAttribute("[# th:utext="${modelVarName}" /]", [# th:utext="${modelVarName}" /]);
+        return "/[# th:utext="${modelNameSmall}" /]/detail";
+    }
+
+}

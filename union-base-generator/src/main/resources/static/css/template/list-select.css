@@ -1,0 +1,60 @@
+.has-select-container{
+    border: 1px solid #eee;
+    height: 512px;
+}
+
+.has-select-container .has-select-title{
+    line-height: 38px;
+    background-color: #eee;
+    border-bottom: 1px solid #eee;
+    padding-left: 4px;
+}
+
+.has-select-container .has-select-clear{
+    float: right;
+    cursor: pointer;
+    padding-right: 4px;
+}
+
+.has-select-container .has-select-clear:hover{
+    color: red;
+}
+
+.has-select-container .has-select-list{
+    height: 474px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.has-select-container .has-select-list li{
+    padding: 4px 12px;
+    line-height: 32px;
+}
+
+.bottom-btn-group{
+    background-color: #eee;
+    position: fixed;
+    bottom: 12px;
+    right: 24px;
+}
+
+.has-select-container .has-select-list li:hover{
+    background-color: #ddd;
+    cursor: pointer;
+    color: red;
+}
+
+.has-select-container .has-select-list li span{
+    display: inline-block;
+    width: 80%;
+}
+
+.has-select-container .has-select-list li .del-icon{
+    float: right;
+    line-height: 32px;
+}
+
+.open-ok-btn{
+    float: right;
+}
+

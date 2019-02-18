@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="public/layout">
+<div th:fragment="content">
+
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">角色</a>
+            </li>
+            <li><a href="#">角色</a></li>
+            <li class="active">查看</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- 返回栏 -->
+                <div class="j-back-bar">
+                    <div class="j-back-btn-group">
+                        <button class="btn btn-white btn-success btn-round j-step-backward">
+                            <i class="ace-icon fa fa-backward "></i>
+                            返回
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 表单 -->
+                <form class="layui-form" action="">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="roleName"
+                                    th:value="${role.roleName}"
+                                    required  lay-verify="required"
+                                    placeholder="请输入角色名称" autocomplete="off" class="layui-input"
+                                    readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色标识符</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="roleCode"
+                                   th:value="${role.roleCode}"
+                                   required  lay-verify="required"
+                                   placeholder="请输入角色标识符" autocomplete="off" class="layui-input"
+                                   readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色描述</label>
+                        <div class="layui-input-block">
+                            <textarea name="roleDesc"
+                                    th:text="${role.roleDesc}" autocomplete="off" class="layui-textarea"
+                                    readonly
+                            ></textarea>
+                        </div>
+                    </div>
+                </form>
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+</html>
+
+<script th:src="${'/static/js/role/detail.js'}"></script>

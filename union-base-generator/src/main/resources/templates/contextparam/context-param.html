@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:id="${contextId}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">参数实例</label>
+        <div class="layui-input-block">
+            <select name="instanceId" class="layui-input" lay-filter="instance-filter">
+                <option value=""></option>
+                <div th:each="instance : ${instanceList}">
+                    <option th:value="${instance.id + '###' + instance.contextId}" th:text="${instance.instanceName}"></option>
+                </div>
+            </select>
+        </div>
+    </div>
+    <div id="param_list_container">
+        <div th:each="contextParam : ${contextParamList}">
+            <div class="layui-form-item">
+                <label class="layui-form-label" th:text="${contextParam.paramName}"></label>
+                <div class="layui-input-block">
+                    <input type="text"
+                           th:name="${contextParam.paramCode}"
+                           th:value="${contextParam.paramDefaultValue}"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
+
+<script th:src="${'/static/js/contextparam/context-param.js'}"></script>

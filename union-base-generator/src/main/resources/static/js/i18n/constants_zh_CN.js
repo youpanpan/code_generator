@@ -1,0 +1,3 @@
+// 登录
+NETWORK_TIMEOUT="网络超时"
+LOGIN_SUCCESS="登录成功"

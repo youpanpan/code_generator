@@ -1,0 +1,58 @@
+<div id="sidebar" class="sidebar responsive ace-save-state">
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success" title="代码生成">
+                <i class="ace-icon fa fa-code"></i>
+            </button>
+
+            <button class="btn btn-info" title="新增模版">
+                <i class="ace-icon fa fa-archive"></i>
+            </button>
+
+            <button class="btn btn-warning" title="用户信息">
+                <i class="ace-icon fa fa-user"></i>
+            </button>
+
+            <button class="btn btn-danger" title="设置">
+                <i class="ace-icon fa fa-cogs"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+            <span class="btn btn-success"></span>
+
+            <span class="btn btn-info"></span>
+
+            <span class="btn btn-warning"></span>
+
+            <span class="btn btn-danger"></span>
+        </div>
+    </div><!-- /.sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li class="" th:each="menu : ${menuList}">
+            <a th:href="${menu.url}" th:class="${#lists.size(menu.childUrlList) > 0?'dropdown-toggle':''}">
+                <i th:class="${'menu-icon ' + ((menu.icon != null and menu.icon != '')?menu.icon:'fa fa-list-alt')} "></i>
+                <span class="menu-text" th:text="${session.language =='zh_CN'?menu.urlName:menu.urlNameEnglish}"> 代码生成 </span>
+                <b class="arrow fa fa-angle-down" th:if="${#lists.size(menu.childUrlList) > 0}"></b>
+            </a>
+            <b class="arrow"></b>
+
+            <ul class="submenu"  th:if="${#lists.size(menu.childUrlList) > 0}">
+                <li class="" th:each="childMenu : ${menu.childUrlList}">
+                    <a th:href="${childMenu.url}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        <span th:text="${session.language =='zh_CN'?childMenu.urlName:childMenu.urlNameEnglish}"></span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+
+        </li>
+
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+        <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+    </div>
+</div>
